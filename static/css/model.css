@@ -1,0 +1,59 @@
+/* CUSTOM CSS */
+
+.how-work-area .btn-block::after{
+  right: 15px !important;
+}
+
+.hero-area .hero-img .img-screen.screen-1 {
+    right: -53px !important;
+    bottom: 0 !important;
+}
+
+.hero-area .hero-img .img-screen.screen-3 {
+    right: 500px !important;
+    bottom: 200px !important;
+}
+
+.hero-area .hero-img .img-screen.screen-2 {
+    bottom: 104.9px !important;
+    right: 480px !important;
+    z-index: 10;
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1399px)
+{
+    .hero-area .hero-img .img-screen.screen-1 {
+        right: -53px !important;
+        bottom: 40px !important;
+        width: 57% !important;
+    }
+
+    .hero-area .hero-img .img-screen.screen-3 {
+        right: 500px !important;
+        bottom: 265px !important;
+        width: 22% !important;
+    }
+
+    .hero-area .hero-img .img-screen.screen-2 {
+        bottom: 104.9px !important;
+        right: 480px !important;
+        z-index: 10;
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+    .hero-area .hero-img .img-screen.screen-1 {
+        display: none;
+    }
+
+    .hero-area .hero-img .img-screen.screen-2 {
+        display: none;
+    }
+
+    .hero-area .hero-img .img-screen.screen-3 {
+        right: 10% !important;
+        bottom: 25% !important;
+        width: 29% !important;
+    }
+}
