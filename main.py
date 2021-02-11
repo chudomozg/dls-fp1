@@ -7,9 +7,11 @@ from helpers import generate_filename
 import os
 
 
+
 __author__ = 'Ivan Timoshenko'
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
+#Get model
 predictor, metadata = get_model()
 
 # FLASK START#######################

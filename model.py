@@ -7,7 +7,7 @@ from detectron2.utils.visualizer import Visualizer
 from detectron2.data import MetadataCatalog
 from PIL import Image
 import numpy as np
-from helpers import generate_filename
+from helpers import generate_filename, remove_old_files
 
 torch.backends.cudnn.enabled = False
 
@@ -127,7 +127,7 @@ def get_model():
     cfg.INPUT.MIN_SIZE_TRAIN = 1
     cfg.MODEL.DEVICE = 'cpu'
     cfg.MODEL.WEIGHTS = 'http://imake.site/detectron2_fullset_train.pth'
-    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7  # set a custom testing threshold
+    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.65  # set a custom testing threshold
     predictor = DefaultPredictor(cfg)
     cityscpaces_metadata = MetadataCatalog.get("cityscpaces").set(thing_classes=CLASS_NAMES,
                                                                   thing_colors=COLORS,
@@ -135,6 +135,11 @@ def get_model():
     return predictor, cityscpaces_metadata
 
 def model_predict(predictor, metadata, img_path, file_ext):
+    #check folder, seek and destroy old files
+    img_dir = os.path.dirname(img_path)
+    remove_old_files(img_dir, 1)
+
+    #create newone
     im = np.array(Image.open(img_path).convert('RGB'))
     outputs = predictor(im)
     v = Visualizer(im,
@@ -142,7 +147,8 @@ def model_predict(predictor, metadata, img_path, file_ext):
                    )
     out = v.draw_instance_predictions(outputs["instances"].to("cpu"))
     out = Image.fromarray(out.get_image())
-    out_filename = os.path.join(os.path.dirname(img_path),
+    out_filename = os.path.join(img_dir,
                                 generate_filename(file_ext))
     out.save(out_filename)
+    os.remove(img_path)
     return out_filename
