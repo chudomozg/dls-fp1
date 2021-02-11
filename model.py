@@ -5,7 +5,8 @@ from detectron2.engine import DefaultPredictor
 from detectron2.config import get_cfg
 from detectron2.utils.visualizer import Visualizer
 from detectron2.data import MetadataCatalog
-import cv2
+from PIL import Image
+import numpy as np
 from helpers import generate_filename
 
 torch.backends.cudnn.enabled = False
@@ -125,9 +126,8 @@ def get_model():
     cfg.MODEL.ROI_HEADS.NUM_CLASSES = 35
     cfg.INPUT.MIN_SIZE_TRAIN = 1
     cfg.MODEL.DEVICE = 'cpu'
-    # cfg.MODEL.WEIGHTS = APP_ROOT + '/detectron2_fullset_train.pth'
     cfg.MODEL.WEIGHTS = 'http://imake.site/detectron2_fullset_train.pth'
-    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.6  # set a custom testing threshold
+    cfg.MODEL.ROI_HEADS.SCORE_THRESH_TEST = 0.7  # set a custom testing threshold
     predictor = DefaultPredictor(cfg)
     cityscpaces_metadata = MetadataCatalog.get("cityscpaces").set(thing_classes=CLASS_NAMES,
                                                                   thing_colors=COLORS,
@@ -135,14 +135,14 @@ def get_model():
     return predictor, cityscpaces_metadata
 
 def model_predict(predictor, metadata, img_path, file_ext):
-    im = cv2.imread(img_path)
+    im = np.array(Image.open(img_path).convert('RGB'))
     outputs = predictor(im)
-    v = Visualizer(im[:, :, ::-1],
+    v = Visualizer(im,
                    metadata=metadata,
-                   scale=0.5,
                    )
     out = v.draw_instance_predictions(outputs["instances"].to("cpu"))
+    out = Image.fromarray(out.get_image())
     out_filename = os.path.join(os.path.dirname(img_path),
                                 generate_filename(file_ext))
-    cv2.imwrite(out_filename, out.get_image()[:, :, ::-1])
+    out.save(out_filename)
     return out_filename
