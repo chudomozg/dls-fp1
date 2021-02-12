@@ -6,7 +6,7 @@ click==7.1.2
 cloudpickle==1.6.0
 cycler==0.10.0
 Cython==0.29.21
-https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.7/detectron2-0.3%2Bcpu-cp37-cp37m-linux_x86_64.whl
+https://dl.fbaipublicfiles.com/detectron2/wheels/cpu/torch1.7/detectron2-0.3%2Bcpu-cp38-cp38-linux_x86_64.whl
 Flask==1.1.2
 Flask-WTF==0.14.3
 future==0.18.2
