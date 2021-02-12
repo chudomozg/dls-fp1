@@ -14,3 +14,4 @@ pyvenv.cfg
 pip-selfcheck.json
 __pycache__
 .idea
+static/upload/*
